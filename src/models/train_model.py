@@ -54,7 +54,7 @@ def run_train(
 
     wandb.login(key=os.getenv("WANDB_KEY"))
     wandb.init(
-        project=os.getenv("WAND_PROJECT_NAME"),
+        project=os.getenv("WANDB_PROJECT_NAME"),
         name=wandb_run_name,
     )
 
