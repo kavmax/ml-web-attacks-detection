@@ -1,57 +1,52 @@
-ml-web-attacks-detection
-==============================
+# About
 
-Web attacks detection using machine learning
+The study addresses the security issues of modern web applications, potential attacks through the HTTP protocol, 
+and the shortcomings of existing Web Application Firewalls (WAFs) and their ability to either allow or mistakenly 
+trigger traffic. 
 
-Project Organization
-------------
+To address these shortcomings, a method of building an HTTP traffic classifier based on 
+Natural Language Processing (NLP) with transformer architecture was explored. The hypothesis was tested, and the 
+results indicated that such a classifier could better handle the task of detecting anomalous activity. 
+This was demonstrated through testing with nine different popular WAF solutions.
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+For this project BERT model was used:
+- mrm8488/bert-tiny-finetuned-sms-spam-detection - 4.39M params
 
+# Model limitations
+I processed HTTP traffic with maximum lengths of 700 characters or 400 tokens for the BERT model. 
+However, there is room for improvement. The speed of the model was not measured because optimization is required 
+before conducting any comparisons with other production-ready Web Application Firewalls (WAFs).
 
---------
+# Model accuracy 
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+The accuracy of the model was evaluated in two ways:
+- using validation data;
+- using data provided from 
+[openappsec](https://www.openappsec.io/post/best-waf-solutions-in-2023-real-world-comparison);
+
+On the validation data the model performs with:
+- Accuracy: 0.9988;
+- Precision: 0.9987;
+- Recall: 0.9989;
+- F1-score: 0.9988;
+
+![img_7.png](readme_assets/img_7.png)
+
+The model performs better than 9 WAFs from 
+[this comparison](https://www.openappsec.io/post/best-waf-solutions-in-2023-real-world-comparison). 
+
+![img.png](readme_assets/img.png)
+
+The balanced accuracy of the best Web Application Firewall (WAF) with ruleset, as per the comparison, is 0.9732. 
+In contrast, my model demonstrates a balanced accuracy of 0.9988, calculated as the mean of precision and recall.
+
+# Examples
+
+The label 'LABEL_0' indicates an anomaly, while 'LABEL_1' signifies a benign HTTP request.
+
+![img_1.png](readme_assets/img_1.png)
+![img_2.png](readme_assets/img_2.png)
+![img_3.png](readme_assets/img_3.png)
+![img_4.png](readme_assets/img_4.png)
+![img_5.png](readme_assets/img_5.png)
+![img_6.png](readme_assets/img_6.png)
