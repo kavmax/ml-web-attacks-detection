@@ -38,7 +38,9 @@ The model performs better than 9 WAFs from
 ![img.png](readme_assets/img.png)
 
 The balanced accuracy of the best Web Application Firewall (WAF) with ruleset, as per the comparison, is 0.9732. 
-In contrast, my model demonstrates a balanced accuracy of 0.9988, calculated as the mean of precision and recall.
+In contrast, my model demonstrates a balanced accuracy of 0.9998, calculated as the mean of Sensitivity and Specificity.
+
+![img.png](readme_assets/img-openappsec-metrics.png)
 
 # Examples
 

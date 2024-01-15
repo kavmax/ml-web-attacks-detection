@@ -8,6 +8,7 @@ import dotenv
 from src.models.ModalConfig import ModalConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from src.models.utils.evaluation import evaluate_model
+from src.models.utils.evaluation import evaluate_model_confusion
 
 
 stub = ModalConfig.stub
@@ -47,10 +48,19 @@ def run_predict(model_name: str, val_data_path: str, tokenizer_name: str):
 
     model = AutoModelForSequenceClassification.from_pretrained(models_save_dir + model_name).to(device)
 
-    eval_results = evaluate_model(
-        pd.read_csv(processed_data_base_path + val_data_path), model, tokenizer
+    val_data = pd.read_csv(processed_data_base_path + val_data_path)
+
+    # eval_results = evaluate_model(
+    #     val_data, model, tokenizer
+    # )
+    # print("eval_results:", eval_results)
+
+    evaluate_model_confusion(
+        val_data,
+        model,
+        tokenizer,
+        device
     )
-    print("eval_results:", eval_results)
 
 
 @stub.local_entrypoint()
@@ -58,5 +68,5 @@ def main():
     run_predict.remote(
         model_name="bert-tiny-4.39m-nosql-e1-extended",
         tokenizer_name="bert-tiny-4.39m-nosql-e1-extended",
-        val_data_path="01-06-2024-full-balanced-nosql.csv",
+        val_data_path="openappsec_final_comparison.csv",
     )
